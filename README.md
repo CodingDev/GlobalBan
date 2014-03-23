@@ -1,0 +1,4 @@
+GlobalBan
+=========
+
+Bukkit Plugin
