@@ -1,5 +1,6 @@
 package de.CodingDev.GlobalBan;
 
+import org.bukkit.command.CommandSender;
 import org.json.simple.JSONObject;
 
 public class CheckResult {
@@ -10,6 +11,7 @@ public class CheckResult {
 	private int globalBanPoints;
 	private String banReason;
 	private long timeLeft;
+	private String errors;
 	GlobalBan globalBan;
 	
 	public CheckResult(GlobalBan globalBan, String playerName){
@@ -25,6 +27,7 @@ public class CheckResult {
 			timeLeft = Long.parseLong(serverResult.get("timeLeft").toString());
 		}else{
 			containsErrors = true;
+			errors = "Cant send API request.";
 		}
 	}
 	
@@ -46,5 +49,14 @@ public class CheckResult {
 
 	public int getPoints() {
 		return globalBanPoints;
+	}
+
+	public void getProfile(CommandSender sender) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getErrors() {
+		return errors;
 	}
 }

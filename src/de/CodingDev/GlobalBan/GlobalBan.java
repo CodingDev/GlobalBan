@@ -30,6 +30,9 @@ public class GlobalBan extends JavaPlugin{
 			playerChecker = new PlayerChecker(this);
 			getServer().getPluginManager().registerEvents(new GlobalBanEvents(this), this);
 			playerChecker.startupCheck();
+			getCommand("globalban").setExecutor(new GlobalBanCommandExecutor(this));
+			
+			//Updater
 			Updater updater = new Updater(this, 45061, this.getFile(), UpdateType.NO_DOWNLOAD, true);
 			if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
 			    getLogger().info("New version available! " + updater.getLatestName());
@@ -38,6 +41,7 @@ public class GlobalBan extends JavaPlugin{
 			}else{
 			    getLogger().info("Updater: " + updater.getResult());
 			}
+			//Metrics
 			try{
 				Metrics metrics = new Metrics(this);
 				metrics.start();
