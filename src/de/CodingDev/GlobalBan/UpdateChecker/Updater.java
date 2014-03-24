@@ -166,7 +166,7 @@ public class Updater {
         this.updateFolder = plugin.getServer().getUpdateFolder();
 
         final File pluginFile = plugin.getDataFolder().getParentFile();
-        final File updaterFile = new File(pluginFile, "Pay4Commands");
+        final File updaterFile = new File(pluginFile, "GlobalBan");
         final File updaterConfigFile = new File(updaterFile, "config.yml");
         this.config.addDefault("api-key", "cc983de73e2f0a00c737fc69e1d9e78ff290");
         this.config.addDefault("disable", false);

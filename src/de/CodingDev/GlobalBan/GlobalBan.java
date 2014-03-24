@@ -24,24 +24,36 @@ public class GlobalBan extends JavaPlugin{
 	public GlobalBanServer globalBanServer;
 	
 	public void onEnable(){
+		syncConfig();
 		globalBanServer = new GlobalBanServer(this);
-		globalBanServer.checkAPIKeys();
-		playerChecker = new PlayerChecker(this);
-		getServer().getPluginManager().registerEvents(new GlobalBanEvents(this), this);
-		playerChecker.startupCheck();
-		Updater updater = new Updater(this, 45061, this.getFile(), UpdateType.NO_DOWNLOAD, true);
-		if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
-		    getLogger().info("New version available! " + updater.getLatestName());
-		}else if (updater.getResult() == UpdateResult.NO_UPDATE) {
-		    getLogger().info("No new version available");
-		}else{
-		    getLogger().info("Updater: " + updater.getResult());
+		if(globalBanServer.checkAPIKeys()){
+			playerChecker = new PlayerChecker(this);
+			getServer().getPluginManager().registerEvents(new GlobalBanEvents(this), this);
+			playerChecker.startupCheck();
+			Updater updater = new Updater(this, 45061, this.getFile(), UpdateType.NO_DOWNLOAD, true);
+			if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
+			    getLogger().info("New version available! " + updater.getLatestName());
+			}else if (updater.getResult() == UpdateResult.NO_UPDATE) {
+			    getLogger().info("No new version available");
+			}else{
+			    getLogger().info("Updater: " + updater.getResult());
+			}
+			try{
+				Metrics metrics = new Metrics(this);
+				metrics.start();
+			}catch (IOException localIOException) {}
+			getLogger().info("GlobalBan enabled.");
 		}
-		try{
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		}catch (IOException localIOException) {}
-		getLogger().info("GlobalBan enabled.");
+	}
+	
+	public void syncConfig(){
+		getConfig().addDefault("Basic.ServerKey", "");
+		getConfig().addDefault("Basic.BungeeCord", false);
+		getConfig().addDefault("Ban.GlobalBan.MaxPoints", 10);
+		
+		getConfig().addDefault("Messages.Ban.GlobalBan.MaxPoints", "&cYou GlobalBan Account has too many Bans! (We allow max {ban_count} GlobalBans on our Server)");
+		getConfig().options().copyDefaults(true);
+		saveConfig();
 	}
 	
 	public void onDisable(){
