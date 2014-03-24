@@ -6,7 +6,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.UUID;
 
+import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -38,6 +40,10 @@ public class GlobalBanServer {
 			}
 		}
 		return false;
+	}
+	
+	public boolean registerPlayer(Player player) {
+		return true;
 	}
 	
 	public JSONObject sendPostRequest(JSONObject args){

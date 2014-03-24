@@ -15,7 +15,7 @@ public class GlobalBanCommandExecutor implements CommandExecutor {
 		if(cmd.getName().equalsIgnoreCase("globalban")){
 			if(args.length == 2){
 				if(args[0].equalsIgnoreCase("profile")){
-					CheckResult cr = globalBan.playerChecker.checkPlayer(args[1]);
+					CheckResult cr = globalBan.playerChecker.checkPlayerByName(args[1]);
 					if(cr.containsErrors()){
 						sender.sendMessage(cr.getErrors());
 					}else{
