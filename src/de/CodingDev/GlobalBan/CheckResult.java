@@ -17,7 +17,8 @@ public class CheckResult {
 	public CheckResult(GlobalBan globalBan, String playerName){
 		this.globalBan = globalBan;
 		JSONObject obj=new JSONObject();
-		obj.put("method","checkPlayer");
+		obj.put("method", "checkPlayer");
+		obj.put("username", playerName);
 		
 		serverResult = globalBan.globalBanServer.sendPostRequest(obj);
 		if(serverResult.containsKey("playerResult")){

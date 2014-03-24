@@ -2,3 +2,7 @@ name: GlobalBan
 version: 1.0
 main: de.CodingDev.GlobalBan.GlobalBan
 author: R3N3PDE
+commands:
+  globalban:
+    description: The GlobalBan Main Command
+    usage: /<command>

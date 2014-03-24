@@ -22,6 +22,7 @@ public class GlobalBan extends JavaPlugin{
 	
 	public PlayerChecker playerChecker;
 	public GlobalBanServer globalBanServer;
+	public GlobalBanCommandExecutor globalBanCommandExecutor;
 	
 	public void onEnable(){
 		syncConfig();
@@ -30,7 +31,8 @@ public class GlobalBan extends JavaPlugin{
 			playerChecker = new PlayerChecker(this);
 			getServer().getPluginManager().registerEvents(new GlobalBanEvents(this), this);
 			playerChecker.startupCheck();
-			getCommand("globalban").setExecutor(new GlobalBanCommandExecutor(this));
+			globalBanCommandExecutor = new GlobalBanCommandExecutor(this);
+			getCommand("globalban").setExecutor(globalBanCommandExecutor);
 			
 			//Updater
 			Updater updater = new Updater(this, 45061, this.getFile(), UpdateType.NO_DOWNLOAD, true);
