@@ -51,12 +51,18 @@ public class GlobalBanServer {
 			if(!args.containsKey("serverKey")){
 				args.put("serverKey", serverKey);
 			}
-			
-			URL oracle = new URL("http://127.0.0.1/api/v1/?"+urlEncodeUTF8(args));
+			String urlArgs = urlEncodeUTF8(args);
+			if(globalBan.getConfig().getBoolean("Basic.Debug")){
+				globalBan.debug("[SERVER] [SEND]" + urlArgs, false);
+			}
+			URL oracle = new URL("http://127.0.0.1/api/v1/?"+urlArgs);
 	        BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
 	        String inputLine = in.readLine();
 	        Object obj = JSONValue.parse(inputLine);
 	        in.close();
+	        if(globalBan.getConfig().getBoolean("Basic.Debug")){
+				globalBan.debug("[SERVER] [READ]" + inputLine, false);
+			}
 	        
 			return (JSONObject) obj;
 		}catch(Exception e){

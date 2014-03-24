@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.CodingDev.GlobalBan.Functions.ReplaceArgs;
 import de.CodingDev.GlobalBan.Metrics.Metrics;
 import de.CodingDev.GlobalBan.UpdateChecker.Updater;
 import de.CodingDev.GlobalBan.UpdateChecker.Updater.UpdateResult;
@@ -23,6 +24,7 @@ public class GlobalBan extends JavaPlugin{
 	public PlayerChecker playerChecker;
 	public GlobalBanServer globalBanServer;
 	public GlobalBanCommandExecutor globalBanCommandExecutor;
+	public String prefix = "§6[GlobalBan] ";
 	
 	public void onEnable(){
 		syncConfig();
@@ -52,17 +54,37 @@ public class GlobalBan extends JavaPlugin{
 		}
 	}
 	
+	public String getMessage(String path, ReplaceArgs... args){
+		String baseMessage = prefix + getConfig().getString("Messages." + getConfig().getString("Basic.Language") + "." + path);
+		for(ReplaceArgs arg : args){
+			baseMessage = arg.replaceAll(baseMessage);
+		}
+		return baseMessage;
+	}
+	
 	public void syncConfig(){
 		getConfig().addDefault("Basic.ServerKey", "");
 		getConfig().addDefault("Basic.BungeeCord", false);
+		getConfig().addDefault("Basic.ShowProtectInfo", true);
+		getConfig().addDefault("Basic.Debug", true);
+		getConfig().addDefault("Basic.Language", "EN");
 		getConfig().addDefault("Ban.GlobalBan.MaxPoints", 10);
 		
-		getConfig().addDefault("Messages.Ban.GlobalBan.MaxPoints", "&cYou GlobalBan Account has too many Bans! (We allow max {ban_count} GlobalBans on our Server)");
+		getConfig().addDefault("Messages.EN.Ban.GlobalBan.MaxPoints", "&cYou GlobalBan Account has too many Bans! (We allow max {ban_count} GlobalBans on our Server)");
+		getConfig().addDefault("Messages.EN.Basic.ShowProtectInfo", "&aThis Server is GlobalBan protected.");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
 	
 	public void onDisable(){
 		getLogger().info("GlobalBan disabled.");
+	}
+
+	public void debug(String message, boolean global) {
+		if(global){
+			getServer().broadcastMessage(prefix + "[DEBUG] " + message);
+		}else{
+			getServer().getLogger().info(prefix + "[DEBUG] " + message);
+		}
 	}
 }

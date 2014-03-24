@@ -2,8 +2,11 @@ package de.CodingDev.GlobalBan;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+
+import de.CodingDev.GlobalBan.Functions.ReplaceArgs;
 
 public class GlobalBanEvents implements Listener {
 	GlobalBan globalBan;
@@ -21,7 +24,7 @@ public class GlobalBanEvents implements Listener {
 					e.setKickMessage(cr.getReason());
 					e.setResult(Result.KICK_OTHER);
 				}else if(cr.getPoints() >= globalBan.getConfig().getInt("Ban.GlobalBan.MaxPoints")){
-					e.setKickMessage(globalBan.getConfig().getString("Messages.Ban.GlobalBan.MaxPoints").replaceAll("{ban_count}", globalBan.getConfig().getString("Ban.GlobalBan.MaxPoints")));
+					e.setKickMessage(globalBan.getMessage("Messages.Ban.GlobalBan.MaxPoints", new ReplaceArgs("ban_count", globalBan.getConfig().getString("Ban.GlobalBan.MaxPoints"))));
 					e.setResult(Result.KICK_OTHER);
 				}
 			}else{
@@ -31,6 +34,13 @@ public class GlobalBanEvents implements Listener {
 		}else{
 			e.setKickMessage("Can not Register/Login on GlobalBan... GlobalBan Offline?");
 			e.setResult(Result.KICK_OTHER);
+		}
+	}
+	
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e){
+		if(globalBan.getConfig().getBoolean("Basic.ShowProtectInfo")){
+			globalBan.getMessage(globalBan.getMessage("Basic.ShowProtectInfo"));
 		}
 	}
 }
