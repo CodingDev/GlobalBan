@@ -37,7 +37,15 @@ public class GlobalBanServer {
 					globalBan.getLogger().warning("Disable GlobalBan...");
 					globalBan.getPluginLoader().disablePlugin(globalBan);
 				}
+			}else{
+				globalBan.getLogger().warning("Can not connect to http://globalban.net. Server Offline?");
+				globalBan.getLogger().warning("Disable GlobalBan...");
+				globalBan.getPluginLoader().disablePlugin(globalBan);
 			}
+		}else{
+			globalBan.getLogger().warning("The ServerKey is Invalid! Create a Key on https://globalban.net/serverKey");
+			globalBan.getLogger().warning("Disable GlobalBan...");
+			globalBan.getPluginLoader().disablePlugin(globalBan);
 		}
 		return false;
 	}

@@ -1,5 +1,7 @@
 package de.CodingDev.GlobalBan;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 
 public class PlayerChecker {
@@ -13,12 +15,12 @@ public class PlayerChecker {
 		return new CheckResult(globalBan, null, playerName);
 	}
 	
-	public CheckResult checkPlayerByUID(String uid){
-		return new CheckResult(globalBan, uid, null);
+	public CheckResult checkPlayerByUID(UUID uuid){
+		return new CheckResult(globalBan, uuid, null);
 	}
 	
 	public CheckResult checkPlayerByPlayer(Player player){
-		return new CheckResult(globalBan, player.getUniqueId().toString(), null);
+		return new CheckResult(globalBan, player.getUniqueId(), null);
 	}
 	
 	public void startupCheck(){

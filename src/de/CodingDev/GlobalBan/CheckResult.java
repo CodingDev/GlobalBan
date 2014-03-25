@@ -1,5 +1,7 @@
 package de.CodingDev.GlobalBan;
 
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.json.simple.JSONObject;
 
@@ -15,27 +17,32 @@ public class CheckResult {
 	private String userID;
 	GlobalBan globalBan;
 	
-	public CheckResult(GlobalBan globalBan, String uid, String playerName){
+	public CheckResult(GlobalBan globalBan, UUID uuid, String playerName){
 		this.globalBan = globalBan;
 		JSONObject obj=new JSONObject();
 		obj.put("method", "checkPlayer");
-		if(uid != null){
-			obj.put("uid", uid);
+		if(uuid != null){
+			obj.put("uid", uuid.toString());
 		}else if(playerName != null){
 			obj.put("username", playerName);
 		}
 		
 		serverResult = globalBan.globalBanServer.sendPostRequest(obj);
-		if(serverResult.containsKey("playerResult")){
-			banResult = BanTypes.valueOf(serverResult.get("banResult").toString());
-			globalBanPoints = Integer.parseInt(serverResult.get("globalBanPoints").toString());
-			banReason = serverResult.get("banReason").toString();
-			timeLeft = Long.parseLong(serverResult.get("timeLeft").toString());
-			userID = serverResult.get("userID").toString();
-			this.playerName = serverResult.get("playerName").toString();
+		if(serverResult != null){ 
+			if(serverResult.containsKey("playerResult")){
+				banResult = BanTypes.valueOf(serverResult.get("banResult").toString());
+				globalBanPoints = Integer.parseInt(serverResult.get("globalBanPoints").toString());
+				banReason = serverResult.get("banReason").toString();
+				timeLeft = Long.parseLong(serverResult.get("timeLeft").toString());
+				userID = serverResult.get("userID").toString();
+				this.playerName = serverResult.get("playerName").toString();
+			}else{
+				containsErrors = true;
+				errors = "Cant send API request.";
+			}
 		}else{
 			containsErrors = true;
-			errors = "Cant send API request.";
+			errors = "The GlobalBan Auth server is Offline, try again later.";
 		}
 	}
 

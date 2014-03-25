@@ -25,6 +25,8 @@ public class GlobalBan extends JavaPlugin{
 	public PlayerChecker playerChecker;
 	public GlobalBanServer globalBanServer;
 	public GlobalBanCommandExecutor globalBanCommandExecutor;
+	public PlayerPing playerPing;
+	
 	public String prefix = "§6[GlobalBan] ";
 	public String newVersionName;
 	public boolean newVersion;
@@ -38,6 +40,10 @@ public class GlobalBan extends JavaPlugin{
 			playerChecker.startupCheck();
 			globalBanCommandExecutor = new GlobalBanCommandExecutor(this);
 			getCommand("globalban").setExecutor(globalBanCommandExecutor);
+			
+			playerPing = new PlayerPing(this);
+			playerPing.running = true;
+			playerPing.start();
 			
 			//Updater
 			Updater updater = new Updater(this, 45061, this.getFile(), UpdateType.NO_DOWNLOAD, true);
@@ -85,6 +91,7 @@ public class GlobalBan extends JavaPlugin{
 	}
 	
 	public void onDisable(){
+		playerPing.running = false;
 		getLogger().info("GlobalBan disabled.");
 	}
 
