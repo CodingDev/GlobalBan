@@ -51,7 +51,18 @@ public class GlobalBanServer {
 	}
 	
 	public boolean registerPlayer(Player player) {
-		return true;
+		JSONObject serverResult;
+		JSONObject obj=new JSONObject();
+		obj.put("method", "checkPlayer");
+		obj.put("uid", player.getUniqueId().toString());
+		
+		serverResult = globalBan.globalBanServer.sendPostRequest(obj);
+		if(serverResult != null){ 
+			if(serverResult.containsKey("registerResult")){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public JSONObject sendPostRequest(JSONObject args){
@@ -63,7 +74,7 @@ public class GlobalBanServer {
 			if(globalBan.getConfig().getBoolean("Basic.Debug")){
 				globalBan.debug("[SERVER] [SEND]" + urlArgs, false);
 			}
-			URL oracle = new URL("http://127.0.0.1/api/v1/?"+urlArgs);
+			URL oracle = new URL("http://127.0.0.1/server_api/v1/?"+urlArgs);
 	        BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
 	        String inputLine = in.readLine();
 	        Object obj = JSONValue.parse(inputLine);
