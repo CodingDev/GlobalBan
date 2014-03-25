@@ -40,7 +40,11 @@ public class GlobalBanEvents implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
 		if(globalBan.getConfig().getBoolean("Basic.ShowProtectInfo")){
-			globalBan.getMessage(globalBan.getMessage("Basic.ShowProtectInfo"));
+			e.getPlayer().sendMessage(globalBan.getMessage("Basic.ShowProtectInfo"));
+		}
+		//Version check Message (send to admin)
+		if(globalBan.newVersion && e.getPlayer().hasPermission("globalban.admin")){
+			e.getPlayer().sendMessage(globalBan.getMessage("Basic.NewVersion", new ReplaceArgs("new_version", globalBan.newVersionName)));
 		}
 	}
 }

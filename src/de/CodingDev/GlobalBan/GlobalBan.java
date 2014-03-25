@@ -2,6 +2,7 @@ package de.CodingDev.GlobalBan;
 
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.CodingDev.GlobalBan.Functions.ReplaceArgs;
@@ -25,6 +26,8 @@ public class GlobalBan extends JavaPlugin{
 	public GlobalBanServer globalBanServer;
 	public GlobalBanCommandExecutor globalBanCommandExecutor;
 	public String prefix = "§6[GlobalBan] ";
+	public String newVersionName;
+	public boolean newVersion;
 	
 	public void onEnable(){
 		syncConfig();
@@ -40,6 +43,8 @@ public class GlobalBan extends JavaPlugin{
 			Updater updater = new Updater(this, 45061, this.getFile(), UpdateType.NO_DOWNLOAD, true);
 			if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
 			    getLogger().info("New version available! " + updater.getLatestName());
+			    newVersion = true;
+			    newVersionName = updater.getLatestName();
 			}else if (updater.getResult() == UpdateResult.NO_UPDATE) {
 			    getLogger().info("No new version available");
 			}else{
@@ -59,19 +64,22 @@ public class GlobalBan extends JavaPlugin{
 		for(ReplaceArgs arg : args){
 			baseMessage = arg.replaceAll(baseMessage);
 		}
-		return baseMessage;
+		return ChatColor.translateAlternateColorCodes('&', baseMessage);
 	}
 	
 	public void syncConfig(){
-		getConfig().addDefault("Basic.ServerKey", "");
-		getConfig().addDefault("Basic.BungeeCord", false);
-		getConfig().addDefault("Basic.ShowProtectInfo", true);
-		getConfig().addDefault("Basic.Debug", true);
-		getConfig().addDefault("Basic.Language", "EN");
-		getConfig().addDefault("Ban.GlobalBan.MaxPoints", 10);
+		//Test Key for Debug
+		//Reset by Boot
+		getConfig().set("Basic.ServerKey", "88ea39439e74fa27c09a4fc0bc8ebe6d00978392");
+		getConfig().set("Basic.BungeeCord", false);
+		getConfig().set("Basic.ShowProtectInfo", true);
+		getConfig().set("Basic.Debug", true);
+		getConfig().set("Basic.Language", "EN");
+		getConfig().set("Ban.GlobalBan.MaxPoints", 10);
 		
-		getConfig().addDefault("Messages.EN.Ban.GlobalBan.MaxPoints", "&cYou GlobalBan Account has too many Bans! (We allow max {ban_count} GlobalBans on our Server)");
-		getConfig().addDefault("Messages.EN.Basic.ShowProtectInfo", "&aThis Server is GlobalBan protected.");
+		getConfig().set("Messages.EN.Ban.GlobalBan.MaxPoints", "&cYou GlobalBan Account has too many Bans! (We allow max {ban_count} GlobalBans on our Server)");
+		getConfig().set("Messages.EN.Basic.ShowProtectInfo", "This Server is GlobalBan protected.");
+		getConfig().set("Messages.EN.Basic.NewVersion", "A new Version is available! (&c{new_version}&6)");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
