@@ -14,12 +14,11 @@ public class PlayerPing extends Thread{
 		while(running){
 			try{
 				//Mark all players as Online.
-				
 				for(Player player : globalBan.getServer().getOnlinePlayers()){
 					globalBan.playerChecker.checkPlayerByUID(player.getUniqueId());
 				}
 				
-				Thread.sleep(1000);
+				Thread.sleep(30000);
 			}catch(Exception e){
 				globalBan.getLogger().warning("");
 				try {
