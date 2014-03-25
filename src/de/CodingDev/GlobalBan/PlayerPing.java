@@ -12,11 +12,9 @@ public class PlayerPing extends Thread{
 	
 	public void run(){
 		while(running){
+			globalBan.debug("Create Player Ping...", false);
 			try{
-				//Mark all players as Online.
-				for(Player player : globalBan.getServer().getOnlinePlayers()){
-					globalBan.playerChecker.checkPlayerByUID(player.getUniqueId());
-				}
+				globalBan.playerChecker.pingCkeck();
 				
 				Thread.sleep(30000);
 			}catch(Exception e){

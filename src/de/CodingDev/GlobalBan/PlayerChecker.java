@@ -42,4 +42,23 @@ public class PlayerChecker {
 		}
 	}
 	
+	public void pingCkeck(){
+		for(Player player : globalBan.getServer().getOnlinePlayers()){
+			if(globalBan.globalBanServer.registerPlayer(player)){
+				CheckResult cr = checkPlayerByPlayer(player);
+				if(!cr.containsErrors()){
+					if(cr.getReult() != BanTypes.CLEAN){
+						player.kickPlayer(cr.getReason()); 
+					}else if(cr.getPoints() >= globalBan.getConfig().getInt("Ban.GlobalBan.MaxPoints")){
+						player.kickPlayer(globalBan.getConfig().getString("Messages.Ban.GlobalBan.MaxPoints").replaceAll("{ban_count}", globalBan.getConfig().getString("Ban.GlobalBan.MaxPoints")));
+					}
+				}else{
+					globalBan.getLogger().warning("Can not get CheckResult... GlobalBan Offline? Error: " + cr.getErrors());
+				}
+			}else{
+				globalBan.getLogger().warning("Can not Register/Login on GlobalBan... GlobalBan Offline?");
+			}
+		}
+	}
+	
 }
